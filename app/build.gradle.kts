@@ -1,7 +1,12 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serilization)
+    alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.devtools.ksp)
 }
 
 android {
@@ -14,6 +19,13 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        val keystoreFile = project.rootProject.file("apikeys.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+
+        //return empty key in case something goes wrong
+        val apiKey = properties.getProperty("API_KEY") ?: "demo"
+        buildConfigField("String", "API_KEY", apiKey)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -56,4 +69,34 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.paging.compose)
+    //Splash Api
+    implementation(libs.androidx.core.splashscreen)
+    //Navigation
+    implementation(libs.androidx.navigation.compose)
+    //hilts
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+
+
+    // For local unit tests
+    //Coil
+    implementation(libs.coil.compose)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    //DataStore
+    implementation(libs.androidx.datastore.preferences)
+    //Compose Foundation
+    implementation(libs.androidx.foundation)
+    //Accompanist
+    implementation(libs.accompanist.systemuicontroller)
+
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
