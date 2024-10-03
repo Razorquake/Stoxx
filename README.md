@@ -57,7 +57,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 For any questions or issues, please open an issue or contact [Razorquake](https://github.com/Razorquake).
-
----
-
-You can customize this template further to match the specifics of your project.
